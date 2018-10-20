@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import NavBar from './Components/NavBar'
+import Header from './Components/Header'
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        Hello
+        <NavBar />
+        <Header />
+        {/* <Header />
+        <Popular /> */}
       </div>
     )
   }
