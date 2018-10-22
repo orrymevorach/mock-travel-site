@@ -38,6 +38,9 @@
                 padding: 0;
             }
             a {
+                &:hover {
+                    color: #ea5318;
+                }
                 text-decoration: none;
                 color: white;
             }

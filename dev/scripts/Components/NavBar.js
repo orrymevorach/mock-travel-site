@@ -2,7 +2,6 @@ import React from 'react';
 
 const NavBar = () => {
     return (
-        <div>
             <nav className="headerNav">
                 <div className="wrapper clearfix text">
                     <i className="fas fa-plane"></i>
@@ -18,7 +17,6 @@ const NavBar = () => {
                     </ul>
                 </div>
             </nav>        
-        </div>
     )
 }
 

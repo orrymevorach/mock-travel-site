@@ -1,0 +1,74 @@
+section.why-choose-us {
+    .heading {
+        background-color: #f4f4f4;
+        width: 100%;
+        h2 {
+            padding: 87px 0 20px 0;
+        }
+        p {
+            padding-bottom: 55px;
+        }
+    }
+    .main-content {
+        background: url(../../assets/treesHD.jpg);
+    }
+    .box-container {
+        display: flex;
+        margin: 0 auto;
+        padding: 70px 0;
+    }
+    .box {
+        width: 360px;
+        background: rgba(255,255,255,0.8);
+        border-radius: 10px;
+    }
+    .box:nth-of-type(2) {
+        margin: auto 30px;
+    }
+    .icon-container {
+        background-color: #ea5318;
+        width: 75px;
+        height: 75px;
+        margin: 35px auto 25px;
+        border-radius: 10px;
+        position: relative;
+    }
+    svg {
+        color: #ffffff;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .fa-file-image,
+    .fa-globe-americas {
+        font-size: 45px;
+        top: 15px;
+    }
+    .fa-money-bill-alt {
+        font-size: 40px;    
+        top: 17px;
+    }
+
+    h3 {
+        font-size: 22px;
+        color: #444444;
+        line-height: 28px;
+        text-align: center;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+    .main-content p {
+        font-size: 14px;
+        color: #444444;
+        font-weight: 400;
+        width: 300px;
+        margin: 0 auto 30px;
+        text-align: center;
+        line-height: 26px;
+        font-family: 'Open Sans', sans-serif;
+    }
+    
+
+}

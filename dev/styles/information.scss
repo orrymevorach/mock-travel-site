@@ -1,0 +1,29 @@
+section.information {
+    background: url(../../assets/treesHD.jpg);
+    width: 100%;
+    padding: 105px 0;
+    .wrapper {
+        display: flex;
+        justify-content: center;
+    }
+    h1 {
+        font-family: "Open Sans", sans-serif;
+        margin-bottom: 10px;
+    }
+    h1, p {
+        text-align: center;
+    }
+    p {
+        color: #ffffff;
+        text-transform: capitalize;
+        font-size: 24px;
+        font-weight: 600;
+    }
+    .container {
+        width: 200px;
+        margin-right: 80px;
+        &:last-of-type {
+            margin-right: 0;
+        }
+    }
+}

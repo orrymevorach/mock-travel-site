@@ -39,18 +39,16 @@ const Header = () => {
 
     
     return (
-        <div>
             <header>
                 <div id="background-container">
-                <video src="../../../assets/sunset.mp4" autoPlay></video>
+                    <video src="../../../assets/sunset2.mp4" autoPlay loop></video>
                     <div className="black-transparent"></div>
                 </div>
-                <div className="wrapper">
+                <div className="text-container">
                     <h1>Your Best Travel Tour</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, perspiciatis. Dolorem sapiente incidunt repellat atque ipsam nesciunt non sunt illo corporis, enim fugit totam magni, accusamus, maiores voluptates! Fugiat, non?</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, perspiciatis. Dolorem sapiente incidunt repellat atque ipsam nesciunt non sunt</p>
                 </div>
             </header>
-        </div>
     )
 }
 
