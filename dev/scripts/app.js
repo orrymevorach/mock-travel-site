@@ -7,6 +7,7 @@ import WhyChooseUs from './Components/WhyChooseUs'
 import Reviews from './Components/Reviews'
 import Information from './Components/Information'
 import Newsletter from './Components/Newsletter'
+import Footer from './Components/Footer'
 
 class App extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class App extends React.Component {
         <Reviews />
         <Information />
         <Newsletter />
+        <Footer />
       </div>
     )
   }

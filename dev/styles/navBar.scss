@@ -1,10 +1,14 @@
-.headerNav {
+nav.headerNav {
     background: black;
     color: white;
     text-transform: uppercase;
     padding: 20px 0;
     font-family: 'Raleway', sans-serif;
     letter-spacing: 1px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
     .text {
         position: relative;
         top: 0;
@@ -52,6 +56,5 @@
         padding: 7px;
         font-size: 35px;
         margin-top: -9px;
-        
     }
 }
