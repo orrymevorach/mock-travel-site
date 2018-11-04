@@ -1,0 +1,85 @@
+section.about,
+section.bookings,
+section.blog,
+section.contact {
+    .text-container {
+        background-color: black;
+        width: 100%;
+        height: 50vh;
+    }
+    h1 {
+        color: white;
+        font-size: 100px;
+        text-align: center;
+        padding-top: 100px;
+    }
+}
+
+section.bookings {
+    .wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+    }
+    .trip-container {
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        margin: 15px 0;
+        border-radius: 3px;
+    }
+    h2,
+    p {
+        color: #fff;
+    }
+    .trip-container img {
+        width: 150px;
+        height: 250px;
+        display: block;
+        margin: auto;
+        margin-left: 30px;
+        
+    }
+    .content-container {
+        padding: 25px 25px 25px 40px;
+    }
+    .description {
+        margin: 15px 0 50px 0;
+    }
+    .dates-container{
+        display: flex;
+        margin: 20px 0;
+    }
+    .dates-col-1,
+    .dates-col-2,
+    .dates-col-3 {
+        width: 115px;
+    }
+    .dates-col-2 {
+        margin: 0 -5px 0 30px;
+    }
+    
+    .spots-left,
+    .sold-out {
+        font-weight: bold;
+        font-style: italic;
+    }
+    .sold-out {
+        color: red;
+    }
+    .crossed-out {
+        text-decoration: line-through red;
+    }
+    .book-button {
+        width: 110px;
+        padding: 10px 0;
+        border-radius: 3px;
+        border: none;
+        background-color: #ea5318;
+        margin-top: -7px;
+        color: white;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+}

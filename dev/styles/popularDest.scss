@@ -1,5 +1,5 @@
 section.popular-dest {
-    margin-top: 50vh;
+    margin-top: 80vh;
     padding: 90px 0;
     background-color: #ffffff;
     width: 100%;
@@ -7,27 +7,39 @@ section.popular-dest {
         margin: 15px 0 55px 0;
         font-family: 'Open Sans' sans-serif;
     }
-    .images-container {
+    .images-container-large {
+        width: 100%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    .images-container-small {
         display: flex;
         margin: 0 auto;
+        // Width of each container + 30px margin between each photo - 15px for first and last
         width: 1150px;
-    }
-    .pop-image {
         height: 361px;
-        width: 265px;
-        border-radius: 10px;
-        display: block;
     }
+    
     .image-container {
-        position: relative;
         margin: 0 15px;
+        max-height: 361px;
+        max-width: 265px;
+        border-radius: 10px;
+        position: relative;
         &:first-of-type {
             margin-left: 0;
         }
         &:last-of-type {
             margin-right: 0;
         }
+        img {
+            display: block;
+            border-radius: 10px;
+            max-width: 265px;
+            height: 100%;
+        }
     }
+
     .image-screen {
         display: none;
         position: absolute;

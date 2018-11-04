@@ -15,11 +15,11 @@ const Reviews = () => {
                         <h3>Orry Mevorach</h3>
                         <p className="italic job-title">CEO, Traveller</p>
                         <div className="five-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
+                            <i className="fas fa-star"></i>
                         </div>
                     </div>
                 </div>

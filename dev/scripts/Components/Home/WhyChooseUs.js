@@ -11,21 +11,21 @@ const WhyChooseUs = () => {
                 <div className="box-container wrapper">
                     <div className="box">
                         <div className="icon-container">
-                            <i class="far fa-globe-americas"></i>
+                            <i className="far fa-globe-americas"></i>
                         </div>
-                        <h3>World Class Service</h3>
+                        <h3>World className Service</h3>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, inventore dolor. Aliquid obcaecati magni ducimus nemo facilis</p>
                     </div>
                     <div className="box">
                         <div className="icon-container">
-                            <i class="fas fa-file-image"></i>
+                            <i className="fas fa-file-image"></i>
                         </div>
                         <h3>Beautiful Places</h3>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, inventore dolor. Aliquid obcaecati magni ducimus nemo facilis</p>
                     </div>
                     <div className="box">
                         <div className="icon-container">
-                            <i class="fas fa-money-bill-alt"></i>
+                            <i className="fas fa-money-bill-alt"></i>
                         </div>
                         <h3>Value For Money</h3>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, inventore dolor. Aliquid obcaecati magni ducimus nemo facilis</p>
