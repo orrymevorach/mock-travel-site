@@ -10,7 +10,6 @@ import Blog from './Components/Blog';
 import Contact from './Components/Contact';
 import firebase from 'firebase/app';
 import 'firebase/database'; 
-import 'firebase/auth';
 
   const config = {
     apiKey: "AIzaSyDF29pfEggtDGM3G2u1_MxF6jb2QOxWha8",
