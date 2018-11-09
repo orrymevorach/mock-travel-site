@@ -9,6 +9,7 @@ const notify = require('gulp-notify');
 const sass = require('gulp-sass');
 const plumber = require('gulp-plumber');
 const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps')
 
 gulp.task('styles', () => {
 	return gulp.src('./dev/styles/**/*.scss')
@@ -42,8 +43,17 @@ gulp.task('bs', () => {
 	});
 });
 
+gulp.task('index', () => {
+	return gulp.src('./index.html')
+		.pipe(gulp.dest('./public'))
+		.pipe(reload({ stream: true }));
+});
+
 gulp.task('default', ['bs','js','styles'], () => {
 	gulp.watch('dev/**/*.js',['js']);
 	gulp.watch('dev/**/*.scss',['styles']);
 	gulp.watch('./public/styles/style.css',reload);
+	gulp.watch('./index.html',reload);
 });
+
+

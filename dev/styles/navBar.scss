@@ -1,150 +1,219 @@
-nav.headerNav {
-    background: black;
-    color: white;
-    text-transform: uppercase;
-    padding: 20px;
-    font-family: 'Raleway', sans-serif;
-    letter-spacing: 1px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    .text {
-        position: relative;
+// used to contain black-screen and nav
+.nav-container {
+
+    nav.headerNav {
+        background: black;
+        color: white;
+        text-transform: uppercase;
+        padding: 20px;
+        font-family: 'Raleway', sans-serif;
+        letter-spacing: 1px;
+        position: fixed;
         top: 0;
-        z-index: 100;
-    }
-    h1 {
-        float: left;
-        margin: 0;
-        font-weight: 600;
-        font-size: 30px;
-    }
-    .fa-plane {
-        float: left;
-        margin-right: 10px;
-        margin-top: 5px;
-        font-size: 25px;
-        color: #ea5318;
-        transform: rotate(-45deg);
-    }
-    ul {
-        float: right;
-        display: flex;
-        padding: 8px 0 0 0;
-        margin: 0;
-        li {
-            list-style-type: none;
-            padding: 0 20px;
-            font-size: 14px;
+        width: 100%;
+        z-index: 1000;
+        .text {
             position: relative;
-            z-index: 20;
-            transition: 0.2s;
-            &:hover {
-                transform: scale(1.5);
-                top: 2px;
-            }
-            // Magnifying Glass
-            &:last-of-type {
-                padding: 0;
-                &:hover {
-                    transform: none;
-                    top: none;
-                }
-            }
-            a {
-                position: relative;
-                text-decoration: none;
-                color: white;
-                &:hover {
-                    color: #ea5318;
-                }
-            }
+            top: 0;
+            z-index: 100;
         }
-    }
-    .active {
-        color: #ea5318;
-        font-size: 20px;
-        top: -3px;
-        outline: 0;
-    }
-
-    .fa-search {
-        border: 1px solid white;
-        border-radius: 50%;
-        padding: 7px;
-        font-size: 35px;
-        margin: -9px 0 0 10px;
-        position: relative;
-        transition: 0.3s;
-        cursor: pointer;
-        &:hover {
+        h1 {
+            float: left;
+            margin: 0;
+            font-weight: 600;
+            font-size: 30px;
+        }
+        .fa-plane {
+            float: left;
+            margin-right: 10px;
+            margin-top: 5px;
+            font-size: 25px;
             color: #ea5318;
-            border: 1px solid #ea5318;
+            transform: rotate(-45deg);
         }
-    }
-    .form-container {
-        width: 210px;
-        height: 35px;
-        position: absolute;
-        right: 50px;
-        top: -1px;
-        overflow: hidden;
-    }
-    .search-form {
-        transition: 0.5s;
-        background-color: white;
-        position: relative;
-        right: -230px;
-        input[type=text] {
-            border-radius: 10px;
-            border: none;
-            width: 130px;
-            height: 35px;
-            padding-left: 10px;
-            font-size: 12px;
+        ul {
+            float: right;
+            display: flex;
+            padding: 8px 0 0 0;
+            margin: 0;
+            li {
+                list-style-type: none;
+                padding: 0 20px;
+                font-size: 14px;
+                position: relative;
+                z-index: 20;
+                transition: 0.2s;
+                &:hover {
+                    transform: scale(1.5);
+                    top: 2px;
+                }
+                // Magnifying Glass
+                &:last-of-type {
+                    padding: 0;
+                    &:hover {
+                        transform: none;
+                        top: none;
+                    }
+                }
+                a {
+                    position: relative;
+                    text-decoration: none;
+                    color: white;
+                    &:hover {
+                        color: #ea5318;
+                    }
+                }
+            }
         }
-        input[type=submit] {
-            background-color: #ea5318;
-            color: white;
+        .active {
+            color: #ea5318;
+            font-size: 20px;
+            top: -3px;
+            outline: 0;
+        }
+    
+        .fa-search {
+            border: 1px solid white;
+            border-radius: 50%;
+            padding: 7px;
+            font-size: 35px;
+            margin: -9px 0 0 10px;
+            position: relative;
+            transition: 0.3s;
+            cursor: pointer;
+            &:hover {
+                color: #ea5318;
+                border: 1px solid #ea5318;
+            }
+        }
+        .form-container {
+            width: 210px;
             height: 35px;
-            border: none;
-            width: 80px;
             position: absolute;
+            right: 50px;
+            top: -1px;
+            overflow: hidden;
         }
-    }
-    .search-icon {
-        transition: 0.5s;
-    }
-    .search-icon-add-margin {
-        margin-left: 220px;
-        transition: 0.5s;
-    }
-    .form-animation {
-        transition: 0.5s;
-        animation: formAnimation linear 0.5s;
-        right: 0px;
-    }
-    .form-container-animation {
-        animation: formContainerAnimation linear 0.5s;
-    }
-
-    @keyframes formAnimation {
-        90% {
-            right: 10px;
+        .search-form {
+            transition: 0.5s;
+            background-color: white;
+            position: relative;
+            right: -230px;
+            input[type=text] {
+                border-radius: 10px;
+                border: none;
+                width: 130px;
+                height: 35px;
+                padding-left: 10px;
+                font-size: 12px;
+            }
+            input[type=submit] {
+                background-color: #ea5318;
+                color: white;
+                height: 35px;
+                border: none;
+                width: 80px;
+                position: absolute;
+            }
         }
-        100% {
+        .search-icon {
+            transition: 0.5s;
+        }
+        .search-icon-add-margin {
+            margin-left: 220px;
+            transition: 0.5s;
+        }
+        .form-animation {
+            transition: 0.5s;
+            animation: formAnimation linear 0.5s;
             right: 0px;
         }
-    }
-
-    @keyframes formContainerAnimation {
-        90% {
-            right: 60px;
+        .form-container-animation {
+            animation: formContainerAnimation linear 0.5s;
         }
-        100% {
-            right: 50px;
+    
+        @keyframes formAnimation {
+            90% {
+                right: 10px;
+            }
+            100% {
+                right: 0px;
+            }
+        }
+    
+        @keyframes formContainerAnimation {
+            90% {
+                right: 60px;
+            }
+            100% {
+                right: 50px;
+            }
+        }
+        .login-button {
+            background-color: black;
+            border-radius: none;
+            color: #ea5318;
+            padding: 5px 10px;
+            margin-top: -5px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .login-modal {
+            display: none;
+            height: 205px;
+            width: 340px;
+            background-color: rgba(0,0,0,0.5);
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            border: 2px solid white;
+            .login-google,
+            .login-new {
+                color: white;
+                padding: 15px 0;
+                width: 270px;
+                border: none;
+                border-radius: 0;
+                cursor: pointer;
+                display: block;
+                margin: 0 auto;
+            }
+            .login-google {
+                background-color: #db3236;
+                margin-top: 31px;
+                &:hover {
+                    background-color: #d17d7f;
+                }
+            }
+            .login-new {
+                background-color: #ea5318;
+                &:hover {
+                    background-color: #e7906d;
+                }
+            }
+            h3 {
+                margin: 10px 0;
+            }
+            .close-modal {
+                position: absolute;
+                top: 5px;
+                right: 8px;
+                cursor: pointer;
+                color: rgba(255,255,255,0.8);
+            }
         }
     }
-
+    
+    .black-screen {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.8);
+    }
 }

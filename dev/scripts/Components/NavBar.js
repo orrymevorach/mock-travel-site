@@ -9,37 +9,66 @@ class NavBar extends React.Component {
         $('.form-container').toggleClass('form-container-animation')
     }
 
+    loginModal() {
+        $('.login-modal').css({'display': 'block'})
+        $('.black-screen').css({'display': 'block'})
+    }
+
+    closeModal() {
+        $('.login-modal').css({ 'display': 'none' })
+        $('.black-screen').css({ 'display': 'none' })
+    }
+
+    
+    
     render() {
+        const userLoggedIn = this.props.userLoggedIn
+        if(userLoggedIn === true) {
+            this.closeModal()
+        }
         return (
-            <nav className="headerNav">
-                <div className="wrapper clearfix text">
-                    <i className="fas fa-plane"></i>
-                    <h1>Travel</h1>
-
-                    <ul>
-                        {/* Links */}
-                        <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
-                        <li><NavLink to="/about" activeClassName="active">About</NavLink></li>
-                        <li><NavLink to="/bookings" activeClassName="active">Bookings</NavLink></li>
-                        <li><NavLink to="/blog" activeClassName="active">Blog</NavLink></li>
-                        <li><NavLink to="/contact" activeClassName="active">Contact</NavLink></li>
-                        
-                        {/* Search Bar, only visible when click on Search Icon */}
-                        <div className="form-container">
-                            <form action="#" className="search-form">
-                                <input type="text" placeholder="Search Our Tours"/>
-                                <input type="submit" value="SEARCH" />
-                            </form>
+            <div className="nav-container">
+                <div className="black-screen"></div>
+                <nav className="headerNav">
+                    <div className="login-modal">
+                        <div className="close-modal" onClick={this.closeModal}>
+                            <i className="fas fa-times"></i>
                         </div>
-                        
-                        {/* Search Icon */}
-                        <li className="search-icon" onClick={this.showSearchBar}><i className="fas fa-search"></i></li>
+                        <button className="login-google" onClick={this.props.login}>Login With Google</button>
+                        <h3>OR</h3>
+                        <button className="login-new">Create New Account</button>
+                    </div>
+                    <div className="wrapper clearfix text">
+                        <i className="fas fa-plane"></i>
+                        <h1>Travel</h1>
+
+                        <ul>
+                            {/* Links */}
+                            <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
+                            {/* <li><NavLink to="/about" activeClassName="active">About</NavLink></li> */}
+                            <li><NavLink to="/bookings" activeClassName="active">Bookings</NavLink></li>
+                            {this.props.userLoggedIn === true ? <li><NavLink to="/myTrips" activeClassName="active">My Trips</NavLink></li> : null}
+                            
+                            {/* <li><NavLink to="/contact" activeClassName="active">Contact</NavLink></li> */}
+                            {this.props.userLoggedIn === false ? <li><button className="login-button" onClick={this.loginModal}>Login</button></li> : <li><button className="login-button" onClick={this.props.logout}>Logout</button></li> }
+                            
+                            {/* Search Bar, only visible when click on Search Icon */}
+                            <div className="form-container">
+                                <form action="#" className="search-form">
+                                    <input type="text" placeholder="Search Our Tours"/>
+                                    <input type="submit" value="SEARCH" />
+                                </form>
+                            </div>
+                            
+                            {/* Search Icon */}
+                            <li className="search-icon" onClick={this.showSearchBar}><i className="fas fa-search"></i></li>
 
 
-                        
-                    </ul>
-                </div>
-            </nav>
+                            
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         )
     }
     

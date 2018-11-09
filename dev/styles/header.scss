@@ -11,6 +11,9 @@ header {
         video {
             position: relative;
             top: -580px;
+            @media (min-height: 600px) {
+             top: -300px;
+            }
         }
         .black-transparent {
             background-color: black;

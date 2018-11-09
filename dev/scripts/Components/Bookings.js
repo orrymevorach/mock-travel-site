@@ -15,6 +15,7 @@ const Bookings = (props) => {
     }
 
     const tourArray = props.tourList
+    console.log(tourArray)
     
     return (
         <section className="bookings">
@@ -23,7 +24,6 @@ const Bookings = (props) => {
             </div>
             <div className="wrapper">
                 {tourArray.map((tour, i) => {
-
                     const year = tour.departures["2019"]
                     const cityName = tour.city
 

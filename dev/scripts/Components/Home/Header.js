@@ -5,7 +5,7 @@ const Header = () => {
     return (
             <header>
                 <div id="background-container">
-                    <video src="../../../assets/sunset2.mp4" autoPlay loop></video>
+                    <video src="../assets/sunset2.mp4" autoPlay loop></video>
                     <div className="black-transparent"></div>
                 </div>
                 <div className="text-container">

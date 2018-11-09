@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Blog = () => {
+const MyTrips = () => {
     return (
         <section className="blog">
             <div className="text-container">
-                <h1>Blog</h1>
+                <h1>My Trips</h1>
             </div>
         </section>
     )
 }
 
-export default Blog;
+export default MyTrips;
