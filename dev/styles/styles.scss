@@ -1,7 +1,3 @@
-@import './setup';
-@import './variables';
-@import './navBar';
-
 .wrapper {
     max-width: 1150px;
     margin: 0 auto;
@@ -34,4 +30,23 @@ h2 {
 
 .italic {
     font-style: italic;
+}
+.underline {
+    text-decoration: underline;
+}
+
+.black-screen {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.stop-scroll {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
 }

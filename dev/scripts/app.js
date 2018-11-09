@@ -210,7 +210,6 @@ class App extends React.Component {
 
       else {
         dbRefOrig.push(this.state.tourListToRender)
-        dbRefUpdated.push(this.state.tourListToRender)
       }
     })
 
@@ -228,6 +227,9 @@ class App extends React.Component {
         this.setState({
           tourListUpdatedAvailability: currentTours
         })
+      }
+      else {
+        dbRefUpdated.push(this.state.tourListToRender)
       }
     })
 
@@ -278,6 +280,13 @@ class App extends React.Component {
         })
       })
   }
+
+  createNewAccount() {
+    console.log('new account created')
+    const provider = new firebase.auth.SignInWithEmailAndPassword(email, pasword)
+    const auth = firebase.auth()
+    // auth.signInWithPopup(provider)
+  }
   
   updateAvailability(selectedDate, selectedCity) {
     
@@ -320,6 +329,7 @@ class App extends React.Component {
                 userLoggedIn={this.state.userLoggedIn}
                 login={this.loginWithGoogle}
                 logout={this.logout}
+                createNewAccount={this.createNewAccount}
               />
 
             <Route exact path="/" render={() => {
@@ -340,6 +350,7 @@ class App extends React.Component {
                   <Bookings 
                     tourList={this.state.tourListUpdatedAvailability}
                     updateAvailability={this.updateAvailability}
+                    userLoggedIn={this.state.userLoggedIn}
                   />
                 )
               }} />

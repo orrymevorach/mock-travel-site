@@ -1,24 +1,56 @@
 import React from 'react';
+import BlackScreen from './BlackScreen';
+import LoginModal from './LoginModal';
 
 const Bookings = (props) => {
     function bookNow(e) {
-        const confirmation = confirm('Are You Ready For The Greatest Adventure Of Your Live!!')
-        
-        if (confirmation === true) {
-            const selectedDate = e.target.dataset.dates
-            const selectedCity = e.target.dataset.city
+        if(props.userLoggedIn === true) {
+            const confirmation = confirm('Are You Ready For The Greatest Adventure Of Your Live!!')
             
-            // Send Selected Trip Information to Update Availability Function
-            props.updateAvailability(selectedDate, selectedCity);
-
+            if (confirmation === true) {
+                const selectedDate = e.target.dataset.dates
+                const selectedCity = e.target.dataset.city
+                
+                // Send Selected Trip Information to Update Availability Function
+                props.updateAvailability(selectedDate, selectedCity);
+    
+            }
+        
+        }
+        else {
+            $('.black-screen').css({'display': 'block'})
+            $('.modal-please-login').css({'display': 'block'})
+            $('body').addClass('stop-scroll')
+            $('html').addClass('stop-scroll')
         }
     }
 
+    function login() {
+        $('.modal-please-login').addClass('fade-out')
+        setTimeout(function(){
+            $('.modal-please-login').css({ 'display': 'none' })
+            $('.login-modal').css({'display': 'block'})
+        }, 100)
+    }
+
+    function cancel() {
+        $('.black-screen').css({ 'display': 'none' })
+        $('.modal-please-login').css({ 'display': 'none' })
+        $('body').removeClass('stop-scroll')
+        $('html').removeClass('stop-scroll')
+    }
+
     const tourArray = props.tourList
-    console.log(tourArray)
     
     return (
         <section className="bookings">
+            <BlackScreen />
+            <LoginModal />
+            <div className="modal modal-please-login">
+                <h3>Please Log In To Book Your Next Adventure!</h3>
+                <button className="modal-button continue-to-login" onClick={login}>Continue To Log In</button>
+                <button className="modal-button cancel" onClick={cancel}>Cancel</button>
+            </div>
             <div className="text-container">
                 <h1>Bookings</h1>
             </div>

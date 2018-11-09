@@ -1,0 +1,138 @@
+.modal {
+    display: none;
+    padding: 35px;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    border: 2px solid white;
+    z-index: 10;
+    color: white;
+    a {
+        text-decoration: none;
+        color: rgba(255,255,255,0.8);
+        font-size: 13px;
+    }
+}
+.modal-button {
+    color: white;
+    padding: 15px 0;
+    width: 270px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+.close-modal-button {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+    transition: all 0.2s;
+    &:hover {
+        transition: all 0.2s;
+        transform: scale(1.1);
+        color: rgba(255,255,255,0.8);
+    }
+}
+
+.cancel {
+    background-color: rgb(177, 175, 175);
+    &:hover {
+        background-color: rgb(211, 208, 208);
+    }
+}
+.button-no-style {
+    border: none;
+    color: white;
+    text-decoration: underline;
+    background-color: rgba(0,0,0,0);
+    font-size: 12px;
+}
+.login-modal h3 {
+    margin: 10px 0;
+}
+
+.login-google {
+    background-color: #db3236;
+    &:hover {
+        background-color: #d17d7f;
+    }
+}
+.login-new {
+    background-color: #ea5318;
+    margin-bottom: 10;
+    &:hover {
+        background-color: #e7906d;
+    }
+}
+.modal-please-login {
+    color: #ea5318;
+    height: none;
+}
+.continue-to-login {
+    background-color: #ea5318;
+    margin: 25px auto 10px;
+    &:hover {
+        background-color: #e7906d;
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.1s linear;
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+}
+.new-account-modal {
+    top: 80px;
+    h2 {
+        color: white;
+        margin-bottom: 20px;
+    }
+    .first-name,
+    .last-name,
+    .email,
+    .password-set,
+    .password-match {
+        text-align: left;  
+        margin-bottom: 20px;  
+        display: flex;
+        flex-direction: row;
+    }
+    label {
+        margin-right: 10px;
+        font-size: 16px;
+    }
+    input[type=text],
+    input[type=email] {
+        width: 230px;
+        height: 35px;
+        margin-left: auto;
+    }
+    .required-container {
+        display: flex;
+        flex-direction: column;
+    }
+    label.required {
+        font-size: 10px;
+        color: rgba(255,255,255,0.8);
+    }
+    .login-new {
+        margin-bottom: 10px;
+    }
+}
+
+
+
