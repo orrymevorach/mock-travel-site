@@ -29,12 +29,15 @@ class App extends React.Component {
       tourListUpdatedAvailability: [],
       userLoggedIn: false,
       currentUserId: '',
-      currentUserName: ''
+      currentUserName: '',
+      currentUserUpcomingTrips: []
     }
 
     this.updateAvailability = this.updateAvailability.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
     this.logout = this.logout.bind(this)
+    this.addToMyTrips = this.addToMyTrips.bind(this)
+    this.removeTrip = this.removeTrip.bind(this)
   }
 
   componentWillMount() {
@@ -232,44 +235,63 @@ class App extends React.Component {
         dbRefUpdated.push(this.state.tourListToRender)
       }
     })
-
-    // let dbRefUser = firebase.database().ref(`users/${user.uid}`)
-
-    // const users = {}
-
-    // dbRefUser.on('value', snapshot => {
-    //   if(snapshot.exists()) {
-    //     console.log('exists bra')
-    //     return;
-    //   }
-    //   else {
-    //     console.log('doesnt exist bra')
-    //     dbRefUsers.push()
-
-    //   }
-    // })
-
   }
 
   
   loginWithGoogle() {
-    console.log('logged in')
     
     const provider = new firebase.auth.GoogleAuthProvider();
     const auth = firebase.auth();
+    
     auth.signInWithPopup(provider)
-      .then(res => {
-        console.log(res.user.uid, res.user.displayName)
-        this.setState({
-          userLoggedIn: true,
-          currentUserId: res.user.uid,
-          currentUserName: res.user.displayName
-        })
+    .then(res => {
+      const userID = res.user.uid
+      const displayName = res.user.displayName
+      
+      const dbRefUser = firebase.database().ref(`users/${userID}`)
+      dbRefUser.on('value', snapshot => {
+        const data = snapshot.val();
+
+        if(snapshot.exists()) {
+          
+          this.setState({
+            userLoggedIn: true,
+            currentUserId: userID,
+            currentUserName: displayName
+          })
+        }
+        
+        else {
+          const user = {
+            userID: userID,
+            userName: displayName,
+            upcomingTrips: {}
+          }
+          dbRefUser.push(user)
+          
+          this.setState({
+            userLoggedIn: true,
+            currentUserId: userID,
+            currentUserName: displayName
+          })
+
+        }
       })
+
+      const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
+      dbRefUpcomingTrips.on('value', snapshot => {
+        const data = snapshot.val()
+        if (snapshot.exists()) {
+          this.setState({
+            currentUserUpcomingTrips: data
+          })
+        }
+      })
+
+    })
   }
 
   logout() {
-    console.log('logged out')
     const auth = firebase.auth();
     auth.signOut()
       .then(() => {
@@ -319,6 +341,77 @@ class App extends React.Component {
 
   }
 
+  addToMyTrips(selectedCity, selectedDate) {
+    const tourList = this.state.tourListUpdatedAvailability
+
+    const currentTrips = this.state.currentUserUpcomingTrips
+
+    const cityObjectWithSelectedDate = {
+      cityObject: [],
+      selectedDate: ''
+    }
+    
+    const tripToAdd = tourList.filter(item => {
+      if (item.city === selectedCity) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    })
+
+    cityObjectWithSelectedDate.selectedDate = selectedDate
+    cityObjectWithSelectedDate.cityObject = tripToAdd[0]
+
+    currentTrips.push(cityObjectWithSelectedDate)
+
+    this.setState({
+      currentUserUpcomingTrips: currentTrips
+    })
+
+    const currentUserID = this.state.currentUserId
+    const dbRefUser = firebase.database().ref(`users/${currentUserID}/upcomingTrips`)
+
+    dbRefUser.on('value', snapshot => {
+      if(snapshot.exists()) {
+        dbRefUser.set(currentTrips)
+      }
+      else {
+        dbRefUser.push(currentTrips)
+      }
+    })
+
+  }
+
+  removeTrip(selectedCity, selectedDate) {
+    const currentUserID = this.state.currentUserId
+    const tourListUpdatedAvailability = this.state.tourListUpdatedAvailability
+
+    const dbRefUpcomingTrips = firebase.database().ref(`users/${currentUserID}/upcomingTrips`)
+
+    dbRefUpcomingTrips.on('value', snapshot => {
+      const data = snapshot.val();
+      
+      for(let key in data) {
+        const newArray = []
+        const cityName = data[key].cityObject.city
+        const departureDates = data[key].cityObject.departures["2019"]
+        if(cityName !== selectedCity) {
+          newArray.push(data[key])
+        }
+        else if(cityName === selectedCity) {
+          for(let i = 0; i < departureDates.length; i++) {
+            if(departureDates[i] !== selectedDate) {
+              newArray.push(data[key])
+            }
+          }  
+        }
+        console.log(newArray)
+        return newArray;
+      }
+    })
+  }
+
   render() {
     return (
       <div>
@@ -342,7 +435,11 @@ class App extends React.Component {
               
               <Route path="/myTrips" exact render={() => {
                 return (
-                  <MyTrips />
+                  <MyTrips 
+                    upcomingTrips={this.state.currentUserUpcomingTrips}
+                    userName={this.state.currentUserName}
+                    removeTrip={this.removeTrip}
+                  />
                 )
               }} />
               <Route path="/bookings" exact render={() => {
@@ -351,6 +448,7 @@ class App extends React.Component {
                     tourList={this.state.tourListUpdatedAvailability}
                     updateAvailability={this.updateAvailability}
                     userLoggedIn={this.state.userLoggedIn}
+                    addToMyTrips={this.addToMyTrips}
                   />
                 )
               }} />

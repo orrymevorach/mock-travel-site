@@ -18,6 +18,13 @@ class NavBar extends React.Component {
         $('html').addClass('stop-scroll')
     }
     
+    closeModal() {
+        $('.login-modal').css({ 'display': 'none' })
+        $('.black-screen').css({ 'display': 'none' })
+        $('body').removeClass('stop-scroll')
+        $('html').removeClass('stop-scroll')
+    }
+    
     render() {
         const userLoggedIn = this.props.userLoggedIn
         if(userLoggedIn === true) {

@@ -13,6 +13,8 @@ const Bookings = (props) => {
                 
                 // Send Selected Trip Information to Update Availability Function
                 props.updateAvailability(selectedDate, selectedCity);
+
+                props.addToMyTrips(selectedCity, selectedDate)
     
             }
         
@@ -46,14 +48,18 @@ const Bookings = (props) => {
         <section className="bookings">
             <BlackScreen />
             <LoginModal />
+
+            <div className="text-container">
+                <h1>Bookings</h1>
+            </div>
+            
+            {/* A Modal informing the user to login if they have not already */}
             <div className="modal modal-please-login">
                 <h3>Please Log In To Book Your Next Adventure!</h3>
                 <button className="modal-button continue-to-login" onClick={login}>Continue To Log In</button>
                 <button className="modal-button cancel" onClick={cancel}>Cancel</button>
             </div>
-            <div className="text-container">
-                <h1>Bookings</h1>
-            </div>
+
             <div className="wrapper">
                 {tourArray.map((tour, i) => {
                     const year = tour.departures["2019"]

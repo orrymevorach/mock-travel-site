@@ -27,7 +27,7 @@ const LoginModal = (props) => {
                 <button className="modal-button login-google" onClick={props.login}>Login With Google</button>
                 <h3>OR</h3>
                 <button className="modal-button login-new">Login With Username</button>
-                <button onClick={newAccountModal} class="button-no-style"><span className="underline">Create A New Account</span></button>
+                <button onClick={newAccountModal} className="button-no-style"><span className="underline">Create A New Account</span></button>
             </div>
             {/* Only renders onClick of Create New Account a-tag  */}
             <NewAccountModal />

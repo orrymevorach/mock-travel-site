@@ -1,5 +1,6 @@
 section.about,
 section.bookings,
+section.my-trips,
 section.contact {
     .text-container {
         background-color: black;
@@ -14,7 +15,8 @@ section.contact {
     }
 }
 
-section.bookings {
+section.bookings,
+section.my-trips {
     .wrapper {
         max-width: 650px;
         margin: 0 auto;
@@ -79,5 +81,29 @@ section.bookings {
         &:hover {
             opacity: 0.7;
         }
+    }
+}
+
+section.my-trips {
+    h2.welcome-back,
+    h3 {
+        color: #ea5318;
+        text-align: center;
+    }
+    img {
+        padding: 30px 0;
+    }
+    .description {
+        margin: 15px auto;
+    }
+    .departure {
+        font-weight: 500;
+    }
+    .departure-date {
+        color: #ea5318;
+    }
+    button {
+        background-color: #ea5318;
+        margin: 20px auto 0;
     }
 }

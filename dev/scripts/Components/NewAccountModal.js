@@ -1,6 +1,18 @@
 import React from 'react';
 
 const NewAccountModal = () => {
+    function passLoginInfo(e) {
+        const email = e.target.value
+        console.log(email)
+    }
+
+    function closeModal() {
+        $('.new-account-modal').css({ 'display': 'none' })
+        $('.black-screen').css({ 'display': 'none' })
+        $('body').removeClass('stop-scroll')
+        $('html').removeClass('stop-scroll')
+    }
+    
     return (
         <div className="modal new-account-modal">
             <h2>Welcome To Travel Tour</h2>
@@ -38,11 +50,15 @@ const NewAccountModal = () => {
                     <input type="text" required />
                 </div>
                 <div className="button-container">
-                    <input type="submit" class="modal-button login-new" value="Create Account" />
+                    <input 
+                        type="submit" 
+                        className="modal-button login-new" 
+                        value="Create Account" 
+                        onClick={passLoginInfo}
+                    />
                 </div>
             </form>
-            {/* <button className="modal-button login-new">Create Account</button> */}
-            <button className="modal-button cancel">Cancel</button>
+            <button className="modal-button cancel" onClick={closeModal}>Cancel</button>
         </div>
     )
 }
