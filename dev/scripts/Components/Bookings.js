@@ -47,7 +47,9 @@ const Bookings = (props) => {
     return (
         <section className="bookings">
             <BlackScreen />
-            <LoginModal />
+            <LoginModal 
+                login={props.login}
+            />
 
             <div className="text-container">
                 <h1>Bookings</h1>

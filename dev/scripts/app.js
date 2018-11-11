@@ -235,6 +235,21 @@ class App extends React.Component {
         dbRefUpdated.push(this.state.tourListToRender)
       }
     })
+
+    // if user didnt log out before closing the page, log them back in automatically
+    const auth = firebase.auth()
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const userID = user.uid
+        const displayName = user.displayName
+        this.setState({
+          userLoggedIn: true,
+          currentUserId: userID,
+          currentUserName: displayName
+        })
+      }
+    })
   }
 
   
@@ -343,7 +358,6 @@ class App extends React.Component {
 
   addToMyTrips(selectedCity, selectedDate) {
     const tourList = this.state.tourListUpdatedAvailability
-
     const currentTrips = this.state.currentUserUpcomingTrips
 
     const cityObjectWithSelectedDate = {
@@ -363,6 +377,7 @@ class App extends React.Component {
     cityObjectWithSelectedDate.selectedDate = selectedDate
     cityObjectWithSelectedDate.cityObject = tripToAdd[0]
 
+
     currentTrips.push(cityObjectWithSelectedDate)
 
     this.setState({
@@ -370,46 +385,15 @@ class App extends React.Component {
     })
 
     const currentUserID = this.state.currentUserId
-    const dbRefUser = firebase.database().ref(`users/${currentUserID}/upcomingTrips`)
+    const dbRefUpcomingTrips = firebase.database().ref(`users/${currentUserID}/upcomingTrips`)
 
-    dbRefUser.on('value', snapshot => {
-      if(snapshot.exists()) {
-        dbRefUser.set(currentTrips)
-      }
-      else {
-        dbRefUser.push(currentTrips)
-      }
-    })
+    dbRefUpcomingTrips.set(currentTrips)
 
   }
 
-  removeTrip(selectedCity, selectedDate) {
+  removeTrip(keyToRemove) {
     const currentUserID = this.state.currentUserId
-    const tourListUpdatedAvailability = this.state.tourListUpdatedAvailability
-
-    const dbRefUpcomingTrips = firebase.database().ref(`users/${currentUserID}/upcomingTrips`)
-
-    dbRefUpcomingTrips.on('value', snapshot => {
-      const data = snapshot.val();
-      
-      for(let key in data) {
-        const newArray = []
-        const cityName = data[key].cityObject.city
-        const departureDates = data[key].cityObject.departures["2019"]
-        if(cityName !== selectedCity) {
-          newArray.push(data[key])
-        }
-        else if(cityName === selectedCity) {
-          for(let i = 0; i < departureDates.length; i++) {
-            if(departureDates[i] !== selectedDate) {
-              newArray.push(data[key])
-            }
-          }  
-        }
-        console.log(newArray)
-        return newArray;
-      }
-    })
+    firebase.database().ref(`users/${currentUserID}/upcomingTrips/${keyToRemove}`).remove()
   }
 
   render() {
@@ -439,6 +423,7 @@ class App extends React.Component {
                     upcomingTrips={this.state.currentUserUpcomingTrips}
                     userName={this.state.currentUserName}
                     removeTrip={this.removeTrip}
+                    upcomingTrips={this.state.currentUserUpcomingTrips}
                   />
                 )
               }} />
@@ -449,6 +434,7 @@ class App extends React.Component {
                     updateAvailability={this.updateAvailability}
                     userLoggedIn={this.state.userLoggedIn}
                     addToMyTrips={this.addToMyTrips}
+                    login={this.loginWithGoogle}
                   />
                 )
               }} />

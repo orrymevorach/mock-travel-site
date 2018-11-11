@@ -47,7 +47,9 @@ class NavBar extends React.Component {
                             <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
                             {/* <li><NavLink to="/about" activeClassName="active">About</NavLink></li> */}
                             <li><NavLink to="/bookings" activeClassName="active">Bookings</NavLink></li>
-                            {this.props.userLoggedIn === true ? <li><NavLink to="/myTrips" activeClassName="active">My Trips</NavLink></li> : null}
+                            {this.props.userLoggedIn === true ? 
+                                <li><NavLink to="/myTrips" activeClassName="active">My Trips</NavLink></li> 
+                            : null}
                             
                             {/* <li><NavLink to="/contact" activeClassName="active">Contact</NavLink></li> */}
                             {this.props.userLoggedIn === false ? 
