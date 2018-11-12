@@ -238,15 +238,27 @@ class App extends React.Component {
 
     // if user didnt log out before closing the page, log them back in automatically
     const auth = firebase.auth()
-
+    
     auth.onAuthStateChanged(user => {
       if (user) {
         const userID = user.uid
         const displayName = user.displayName
+        const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
+        const upComingTripsArray = []
+        
+        // pushing existing items from upcoming trips in firebase to upcoming trips in state so that items will get rendered
+        dbRefUpcomingTrips.on('value', snapshot => {
+          const data = snapshot.val()
+          for(let key in data) {
+            upComingTripsArray.push(data[key])
+          }
+        })
+        
         this.setState({
           userLoggedIn: true,
           currentUserId: userID,
-          currentUserName: displayName
+          currentUserName: displayName,
+          currentUserUpcomingTrips: upComingTripsArray
         })
       }
     })
@@ -392,8 +404,28 @@ class App extends React.Component {
   }
 
   removeTrip(keyToRemove) {
+    const upComingTrips = this.state.currentUserUpcomingTrips
+    
+    const updatedUpcomingTrips = []
+    
+    upComingTrips.map((trip, i) => {
+      
+      if(i !== keyToRemove) {
+        updatedUpcomingTrips.push(trip)
+      }
+    })
+    
+
+    this.setState({
+      currentUserUpcomingTrips: updatedUpcomingTrips
+    })
+
+
     const currentUserID = this.state.currentUserId
     firebase.database().ref(`users/${currentUserID}/upcomingTrips/${keyToRemove}`).remove()
+    
+
+
   }
 
   render() {
@@ -424,6 +456,7 @@ class App extends React.Component {
                     userName={this.state.currentUserName}
                     removeTrip={this.removeTrip}
                     upcomingTrips={this.state.currentUserUpcomingTrips}
+                    userLoggedIn={this.state.userLoggedIn}
                   />
                 )
               }} />
