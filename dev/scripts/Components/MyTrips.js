@@ -20,22 +20,16 @@ const MyTrips = (props) => {
 
             <div className="wrapper">
                 
-                {myTrips.length === 0 && props.userLoggedIn === true ?
+                {myTrips.length === 0 ?
                     <div>
                         <h2 className="welcome-back">Welcome {userName}!</h2>
                         <h3>There will be nothing to see here until you book a trip!</h3>
                     </div>
-                : myTrips.length !== 0 && props.userLoggedIn === true ?
+                : 
                     <div>
                         <h2 className="welcome-back">Welcome Back {userName}!</h2>
                         <h3>Your Upcoming Trips Are:</h3>
                     </div>
-                : props.userLoggedIn === false ?
-                    <div>
-                        <h2 className="welcome-back">Welcome!</h2>
-                        <h3>Please Log In To See Your Trips</h3>
-                    </div>
-                : null
                 }
             
                 {myTrips.map((trip, i) => {
