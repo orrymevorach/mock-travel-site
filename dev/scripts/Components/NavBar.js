@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, NavLink, Link, Switch } from 'react-router-dom';
 import BlackScreen from './BlackScreen'
-import LoginModal from './LoginModal'
+import LoginModal from './Modals/LoginModal'
 
 class NavBar extends React.Component {
     
@@ -26,6 +26,7 @@ class NavBar extends React.Component {
     }
     
     render() {
+        
         const userLoggedIn = this.props.userLoggedIn
         if(userLoggedIn === true) {
             this.closeModal()
@@ -34,8 +35,11 @@ class NavBar extends React.Component {
             <div className="nav-container">
                 <BlackScreen />
                 <LoginModal 
-                    login={this.props.login}
-                    // createNewAccount={this.props.createNewAccount}
+                    loginWithGoogle={this.props.loginWithGoogle}
+                    createNewAccount={this.props.createNewAccount}
+                    loginWithEmail={this.props.loginWithEmail}
+                    firebaseConfig={this.props.firebaseConfig}
+                    closeModal={this.props.closeModal}
                 />
                 <nav className="headerNav">
                     <div className="wrapper clearfix text">
@@ -45,7 +49,6 @@ class NavBar extends React.Component {
                         <ul>
                             {/* Links */}
                             <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
-                            {/* <li><NavLink to="/about" activeClassName="active">About</NavLink></li> */}
                             <li><NavLink to="/bookings" activeClassName="active">Bookings</NavLink></li>
                             {this.props.userLoggedIn === true ? 
                                 <li><NavLink to="/myTrips" activeClassName="active">My Trips</NavLink></li> 
@@ -56,9 +59,9 @@ class NavBar extends React.Component {
                                 <li>
                                     <button className="login-button" onClick={this.loginModal}>Login</button>
                                 </li> 
-                            : 
+                            :
                                 <li>
-                                    <NavLink to="/"><button className="login-button" onClick={this.props.logout}>Logout</button></NavLink>
+                                    <NavLink to="/"><button className="login-button" onClick={this.props.logoutOfGoogle}>Logout</button></NavLink>
                                 </li> 
                             }
                             

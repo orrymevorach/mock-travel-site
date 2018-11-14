@@ -95,7 +95,8 @@
         }
     }
 }
-.new-account-modal {
+.new-account-modal,
+.login-with-email-modal {
     top: 80px;
     h2 {
         color: white;
@@ -132,6 +133,10 @@
     .login-new {
         margin-bottom: 10px;
     }
+}
+
+.login-with-non-google-modal {
+
 }
 
 

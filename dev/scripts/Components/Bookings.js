@@ -1,6 +1,6 @@
 import React from 'react';
 import BlackScreen from './BlackScreen';
-import LoginModal from './LoginModal';
+import LoginModal from './Modals/LoginModal';
 
 const Bookings = (props) => {
     function bookNow(e) {
@@ -48,7 +48,7 @@ const Bookings = (props) => {
         <section className="bookings">
             <BlackScreen />
             <LoginModal 
-                login={props.login}
+                loginWithGoogle={props.loginWithGoogle}
             />
 
             <div className="text-container">

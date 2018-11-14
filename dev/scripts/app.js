@@ -28,6 +28,8 @@ class App extends React.Component {
       tourListToRender: [],
       tourListUpdatedAvailability: [],
       userLoggedIn: false,
+      userLoggedInWithGoogle: false,
+      userLoggedInWithEmail: false,
       currentUserId: '',
       currentUserName: '',
       currentUserUpcomingTrips: []
@@ -35,9 +37,11 @@ class App extends React.Component {
 
     this.updateAvailability = this.updateAvailability.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
-    this.logout = this.logout.bind(this)
+    this.logoutOfGoogle = this.logoutOfGoogle.bind(this)
     this.addToMyTrips = this.addToMyTrips.bind(this)
     this.removeTrip = this.removeTrip.bind(this)
+    this.createNewAccount = this.createNewAccount.bind(this)
+    this.loginWithEmail = this.loginWithEmail.bind(this)
   }
 
   componentWillMount() {
@@ -318,7 +322,7 @@ class App extends React.Component {
     })
   }
 
-  logout() {
+  logoutOfGoogle() {
     const auth = firebase.auth();
     auth.signOut()
       .then(() => {
@@ -330,11 +334,97 @@ class App extends React.Component {
       })
   }
 
-  createNewAccount() {
-    console.log('new account created')
-    const provider = new firebase.auth.SignInWithEmailAndPassword(email, pasword)
-    const auth = firebase.auth()
-    // auth.signInWithPopup(provider)
+  createNewAccount(email, password, fullName) {
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      const errorCode = error.errorCode
+      const errorMessage = error.message
+    })
+      .then(() => {
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+          const errorCode = error.errorCode
+          const errorMessage = error.message
+        })
+
+        const userID = email.replace(/\./g,'dot'); 
+        const displayName = fullName
+
+        const dbRefUser = firebase.database().ref(`users/${userID}`)
+        dbRefUser.on('value', snapshot => {
+
+          if (snapshot.exists()) {
+
+            console.log('this account already exists')
+            this.setState({
+              userLoggedIn: true,
+              currentUserId: userID,
+              currentUserName: displayName
+            })
+
+            const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
+            dbRefUpcomingTrips.on('value', snapshot => {
+              const data = snapshot.val()
+              if (snapshot.exists()) {
+                this.setState({
+                  currentUserUpcomingTrips: data
+                })
+              }
+            })
+            
+          }
+
+          else {
+            const user = {
+              userID: userID,
+              userName: displayName,
+              upcomingTrips: {}
+            }
+            dbRefUser.push(user)
+
+            this.setState({
+              userLoggedIn: true,
+              currentUserId: userID,
+              currentUserName: displayName
+            })
+
+          }
+        })
+      })
+  }
+  
+  loginWithEmail(email, password) {
+    console.log('logging in with email')
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      const errorCode = error.errorCode
+      const errorMessage = error.message
+    })
+      .then(() => {
+        const userID = email.replace(/\./g, 'dot');
+        // const displayName = fullName
+        this.setState({
+          userLoggedIn: true,
+          currentUserId: userID
+          // currentUserName: displayName
+        })
+
+        const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
+        dbRefUpcomingTrips.on('value', snapshot => {
+          const data = snapshot.val()
+          if (snapshot.exists()) {
+            this.setState({
+              currentUserUpcomingTrips: data
+            })
+          }
+        })
+      })
+  }
+
+  logoutOfEmail() {
+    firebase.auth().signOut().then(function() {
+      console.log('logged out without error')
+    }).catch(function(error) {
+      console.log('error on logout')
+    })
   }
   
   updateAvailability(selectedDate, selectedCity) {
@@ -414,17 +504,26 @@ class App extends React.Component {
         updatedUpcomingTrips.push(trip)
       }
     })
-    
 
     this.setState({
       currentUserUpcomingTrips: updatedUpcomingTrips
     })
 
-
     const currentUserID = this.state.currentUserId
     firebase.database().ref(`users/${currentUserID}/upcomingTrips/${keyToRemove}`).remove()
-    
 
+  }
+
+  closeModal(e) {
+    console.log(e.target)  
+    const modalToClose = e.target.dataset.modalToClose
+    $(`.${modalToClose}`).addClass('fade-out')
+    setTimeout(() => {
+      $(`.${modalToClose}`).css({ 'display': 'none' })
+      $('.black-screen').css({ 'display': 'none' })
+      $('body').removeClass('stop-scroll')
+      $('html').removeClass('stop-scroll')
+    }, 100);
 
   }
 
@@ -436,9 +535,12 @@ class App extends React.Component {
               
               <NavBar 
                 userLoggedIn={this.state.userLoggedIn}
-                login={this.loginWithGoogle}
-                logout={this.logout}
+                loginWithGoogle={this.loginWithGoogle}
+                logoutOfGoogle={this.logoutOfGoogle}
                 createNewAccount={this.createNewAccount}
+                loginWithEmail={this.loginWithEmail}
+                firebaseConfig={config}
+                closeModal={this.closeModal}
               />
 
             <Route exact path="/" render={() => {
@@ -467,7 +569,7 @@ class App extends React.Component {
                     updateAvailability={this.updateAvailability}
                     userLoggedIn={this.state.userLoggedIn}
                     addToMyTrips={this.addToMyTrips}
-                    login={this.loginWithGoogle}
+                    loginWithGoogle={this.loginWithGoogle}
                   />
                 )
               }} />
