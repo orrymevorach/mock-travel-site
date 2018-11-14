@@ -18,7 +18,7 @@ class NavBar extends React.Component {
         $('html').addClass('stop-scroll')
     }
     
-    closeModal() {
+    closeLoginModal() {
         $('.login-modal').css({ 'display': 'none' })
         $('.black-screen').css({ 'display': 'none' })
         $('body').removeClass('stop-scroll')
@@ -29,7 +29,7 @@ class NavBar extends React.Component {
         
         const userLoggedIn = this.props.userLoggedIn
         if(userLoggedIn === true) {
-            this.closeModal()
+            this.closeLoginModal()
         }
         return (
             <div className="nav-container">
@@ -38,31 +38,40 @@ class NavBar extends React.Component {
                     loginWithGoogle={this.props.loginWithGoogle}
                     createNewAccount={this.props.createNewAccount}
                     loginWithEmail={this.props.loginWithEmail}
-                    firebaseConfig={this.props.firebaseConfig}
-                    closeModal={this.props.closeModal}
+                    userLoggedIn={this.props.userLoggedIn}
                 />
                 <nav className="headerNav">
                     <div className="wrapper clearfix text">
                         <i className="fas fa-plane"></i>
                         <h1>Travel</h1>
 
+                        {/* Links */}
                         <ul>
-                            {/* Links */}
+                            {/* Home */}
                             <li><NavLink exact to="/" activeClassName="active">Home</NavLink></li>
-                            <li><NavLink to="/bookings" activeClassName="active">Bookings</NavLink></li>
+                            
+                            {/* Bookings */}
+                            <li><NavLink to="/bookings" activeClassName="active">Book A Trip</NavLink></li>
+                            
+                            {/* My Trips */}
                             {this.props.userLoggedIn === true ? 
                                 <li><NavLink to="/myTrips" activeClassName="active">My Trips</NavLink></li> 
                             : null}
                             
-                            {/* <li><NavLink to="/contact" activeClassName="active">Contact</NavLink></li> */}
+                            {/* Login / Logout */}
                             {this.props.userLoggedIn === false ? 
                                 <li>
                                     <button className="login-button" onClick={this.loginModal}>Login</button>
                                 </li> 
-                            :
+                            : this.props.userLoggedInWithGoogle === true ?
                                 <li>
                                     <NavLink to="/"><button className="login-button" onClick={this.props.logoutOfGoogle}>Logout</button></NavLink>
                                 </li> 
+                            : this.props.userLoggedInWithEmail === true ?
+                                <li>
+                                    <NavLink to="/"><button className="login-button" onClick={this.props.logoutOfEmail}>Logout</button></NavLink>
+                                </li> 
+                            : null
                             }
                             
                             {/* Search Bar, only visible when click on Search Icon */}
@@ -75,9 +84,6 @@ class NavBar extends React.Component {
                             
                             {/* Search Icon */}
                             <li className="search-icon" onClick={this.showSearchBar}><i className="fas fa-search"></i></li>
-
-
-                            
                         </ul>
                     </div>
                 </nav>

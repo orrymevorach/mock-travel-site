@@ -1,16 +1,10 @@
 import React from 'react';
 
 const MyTrips = (props) => {
-    // function passRemoveInfo(e) {
-    //     const city = e.target.dataset.city
-    //     const date = e.target.dataset.dates
-        
-    //     props.removeTrip();
-    // }
 
     const myTrips = props.upcomingTrips
     const userName = props.userName
-
+    console.log(userName)
 
     return (
         <section className="my-trips">

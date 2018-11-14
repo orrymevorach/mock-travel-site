@@ -1,5 +1,4 @@
 import React from 'react';
-import ErrorAccountExists from './ErrorAccountExists'
 
 const NewAccountModal = (props) => {
     function closeModal() {
@@ -10,38 +9,24 @@ const NewAccountModal = (props) => {
     }
 
     function passLoginInfo(e) {
-        const firstName = e.target.form[0].value
-        const lastName = e.target.form[1].value ? e.target.form[1].value : ''
+        const firstName = e.target[0].value
+        const lastName = e.target[1].value ? e.target[1].value : ''
         const fullName = `${firstName} ${lastName}`
-        const email = e.target.form[2].value
-        const password = e.target.form[3].value
-        const event = e
+        const email = e.target[2].value
+        const password = e.target[3].value
 
-        firebase.initializeApp(props.firebaseConfig);
-
-        const dbRefUsers = firebase.database().ref(`users`)
-        dbRefUsers.on('value', snapshot => {
-            const data = snapshot.val()
-            const userID = email.replace(/\./g, 'dot');
-            for (let key in data) {
-                
-                if (userID !== key[data]) {
-                    props.createNewAccount(email, password, fullName)
-                    closeModal()
-                }
-                else {
-                    $('.error-account-exists').css({'display': 'block'})
-                }
-            }
-        })
-        
+        props.createNewAccount(email, password, fullName)
     }
+    const userLoggedIn = props.userLoggedIn
+    if(userLoggedIn === true) {
+        closeModal()
+    }
+    
 
     return (
         <div className="modal new-account-modal">
-            <ErrorAccountExists />
             <h2>Welcome To Travel Tour</h2>
-            <form action="#">
+            <form action="#" onSubmit={passLoginInfo}>
                 <div className="first-name">
                     <div className="required-container">
                         <label htmlFor="first-name">First Name</label>
@@ -72,12 +57,11 @@ const NewAccountModal = (props) => {
                         type="submit" 
                         className="modal-button login-new" 
                         value="Create Account" 
-                        onClick={passLoginInfo}
                         data-modal-to-close="new-account-modal"
                     />
                 </div>
             </form>
-            <button className="modal-button cancel" data-modal-to-close="new-account-modal" onClick={props.closeModal}>Cancel</button>
+            <button className="modal-button cancel" data-modal-to-close="new-account-modal" onClick={closeModal}>Cancel</button>
         </div>
     )
 }
