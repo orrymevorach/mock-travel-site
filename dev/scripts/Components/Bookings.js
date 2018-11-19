@@ -4,24 +4,25 @@ import LoginModal from './Modals/LoginModal';
 
 const Bookings = (props) => {
     function bookNow(e) {
-        if(props.userLoggedIn === true) {
-            const confirmation = confirm('Are You Ready For The Greatest Adventure Of Your Live!!')
-            
+        if (props.userLoggedIn === true) {
+            const confirmation = confirm('Are You Ready For The Greatest Adventure Of Your Life!!')
+            alert("Woo! You can now view your selected trip in the 'My Trips' section.")
+
+
             if (confirmation === true) {
                 const selectedDate = e.target.dataset.dates
                 const selectedCity = e.target.dataset.city
-                
-                // Send Selected Trip Information to Update Availability Function
-                props.updateAvailability(selectedDate, selectedCity);
 
+                // Send Selected Trip Information to Update Availability Function
+                props.updateAvailability(selectedDate, selectedCity)
                 props.addToMyTrips(selectedCity, selectedDate)
-    
+
             }
-        
+
         }
         else {
-            $('.black-screen').css({'display': 'block'})
-            $('.modal-please-login').css({'display': 'block'})
+            $('.black-screen').css({ 'display': 'block' })
+            $('.modal-please-login').css({ 'display': 'block' })
             $('body').addClass('stop-scroll')
             $('html').addClass('stop-scroll')
         }
@@ -29,9 +30,9 @@ const Bookings = (props) => {
 
     function login() {
         $('.modal-please-login').addClass('fade-out')
-        setTimeout(function(){
+        setTimeout(function () {
             $('.modal-please-login').css({ 'display': 'none' })
-            $('.login-modal').css({'display': 'block'})
+            $('.login-modal').css({ 'display': 'block' })
         }, 100)
     }
 
@@ -43,18 +44,28 @@ const Bookings = (props) => {
     }
 
     const tourArray = props.tourList
-    
+
     return (
         <section className="bookings">
             <BlackScreen />
-            <LoginModal 
+            <LoginModal
                 loginWithGoogle={props.loginWithGoogle}
+                createNewAccount={props.createNewAccount}
+                loginWithEmail={props.loginWithEmail}
+                userLoggedIn={props.userLoggedIn}
+                cheatPass={props.cheatPass}
+                handleChange={props.handleChange}
+                createUserFirstName={props.createUserFirstName}
+                createUserLastName={props.createUserLastName}
+                createUserEmail={props.createUserEmail}
+                createUserPassword={props.createUserPassword}
+                logInEmail={props.logInEmail}
+                logInPassword={props.logInPassword}
             />
 
             <div className="text-container">
                 <h1>Bookings</h1>
             </div>
-            
             {/* A Modal informing the user to login if they have not already */}
             <div className="modal modal-please-login">
                 <h3>Please Log In To Book Your Next Adventure!</h3>
@@ -129,7 +140,6 @@ const Bookings = (props) => {
                     )
                 })}
             </div>
-            
         </section>
     )
 }

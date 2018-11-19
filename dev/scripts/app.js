@@ -8,8 +8,8 @@ import MyTrips from './Components/MyTrips';
 import Bookings from './Components/Bookings';
 // import Contact from './Components/Contact';
 import firebase from 'firebase/app';
-import 'firebase/database'; 
-import 'firebase/auth'; 
+import 'firebase/database';
+import 'firebase/auth';
 
 const config = {
   apiKey: "AIzaSyDF29pfEggtDGM3G2u1_MxF6jb2QOxWha8",
@@ -27,14 +27,27 @@ class App extends React.Component {
     this.state = {
       tourListToRender: [],
       tourListUpdatedAvailability: [],
+      // used to render account info to nav bar
       userLoggedIn: false,
+      // used to specify logout instructions, google vs. email
       userLoggedInWithGoogle: false,
       userLoggedInWithEmail: false,
       currentUserId: '',
       currentUserName: '',
-      currentUserUpcomingTrips: []
+      currentUserUpcomingTrips: [],
+      // used to handle inputs and render information only when a user creates an account
+      createUserFirstName: '',
+      createUserLastName: '',
+      createUserEmail: '',
+      createUserPassword: '',
+      // used to render name to myTrips page when account created
+      createdUser: false,
+      // used to handle inputs on login
+      logInEmail: '',
+      logInPassword: ''
     }
 
+    this.handleChange = this.handleChange.bind(this)
     this.updateAvailability = this.updateAvailability.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
     this.logoutOfGoogle = this.logoutOfGoogle.bind(this)
@@ -56,7 +69,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -77,7 +90,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -98,7 +111,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -119,7 +132,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -140,7 +153,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -161,7 +174,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -182,7 +195,7 @@ class App extends React.Component {
           "2019": [
             {
               "date": "Jan 4, 2019",
-              "availability": 5 
+              "availability": 5
             },
             {
               "date": "Feb 14, 2019",
@@ -211,7 +224,7 @@ class App extends React.Component {
     // if no, create a tours-original and tours-updated object in firebase and push the original array from state into it
     dbRefOrig.on('value', snapshot => {
       if (snapshot.exists()) {
-        return ;
+        return;
       }
 
       else {
@@ -226,7 +239,7 @@ class App extends React.Component {
     // if yes, push all the information from the firebase object to state to render the bookings page properly
     dbRefUpdated.on('value', snapshot => {
       const data = snapshot.val();
-      if(snapshot.exists()) {
+      if (snapshot.exists()) {
         for (let key in data) {
           currentTours.push(data[key])
         }
@@ -241,7 +254,6 @@ class App extends React.Component {
 
     // if user didnt log out before closing the page, log them back in automatically
     const auth = firebase.auth()
-    
     auth.onAuthStateChanged(user => {
       if (user) {
         const userID = user.uid
@@ -249,7 +261,7 @@ class App extends React.Component {
         const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
         const upComingTripsArray = []
         const checkEmailProvider = user.email.split('@')[1]
-        if(checkEmailProvider === 'gmail.com') {
+        if (checkEmailProvider === 'gmail.com') {
           this.setState({
             userLoggedInWithGoogle: true
           })
@@ -259,79 +271,89 @@ class App extends React.Component {
             userLoggedInWithEmail: true
           })
         }
-        
+
         // pushing existing items from upcoming trips in firebase to upcoming trips in state so that items will get rendered
         dbRefUpcomingTrips.on('value', snapshot => {
           const data = snapshot.val()
-          for(let key in data) {
+          for (let key in data) {
             upComingTripsArray.push(data[key])
           }
         })
-        
+
         this.setState({
           userLoggedIn: true,
           currentUserId: userID,
           currentUserName: displayName,
-          currentUserUpcomingTrips: upComingTripsArray
         })
+
+        if(this.state.createdUser === false) {
+          this.setState({
+            currentUserUpcomingTrips: upComingTripsArray
+          })
+        }
       }
     })
   }
 
-  
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+
   loginWithGoogle() {
-    
+
     const provider = new firebase.auth.GoogleAuthProvider();
     const auth = firebase.auth();
-    
+
     auth.signInWithPopup(provider)
-    .then(res => {
-      const userID = res.user.uid
-      const displayName = res.user.displayName
-      
-      const dbRefUser = firebase.database().ref(`users/${userID}`)
-      dbRefUser.on('value', snapshot => {
-        const data = snapshot.val();
+      .then(res => {
+        const userID = res.user.uid
+        const displayName = res.user.displayName
 
-        if(snapshot.exists()) {
-          
-          this.setState({
-            userLoggedIn: true,
-            userLoggedInWithGoogle: true,
-            currentUserId: userID,
-            currentUserName: displayName
-          })
-        }
-        
-        else {
-          const user = {
-            userID: userID,
-            userName: displayName,
-            upcomingTrips: {}
+        const dbRefUser = firebase.database().ref(`users/${userID}`)
+        dbRefUser.on('value', snapshot => {
+
+          if (snapshot.exists()) {
+
+            this.setState({
+              userLoggedIn: true,
+              userLoggedInWithGoogle: true,
+              currentUserId: userID,
+              currentUserName: displayName
+            })
           }
-          dbRefUser.push(user)
-          
-          this.setState({
-            userLoggedIn: true,
-            userLoggedInWithGoogle: true,
-            currentUserId: userID,
-            currentUserName: displayName
-          })
 
-        }
+          else {
+            const user = {
+              userID: userID,
+              userName: displayName,
+              upcomingTrips: {}
+            }
+            dbRefUser.push(user)
+
+            this.setState({
+              userLoggedIn: true,
+              userLoggedInWithGoogle: true,
+              currentUserId: userID,
+              currentUserName: displayName
+            })
+
+          }
+        })
+
+        const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
+        dbRefUpcomingTrips.on('value', snapshot => {
+          const data = snapshot.val()
+          if (snapshot.exists()) {
+            this.setState({
+              currentUserUpcomingTrips: data
+            })
+          }
+        })
+
       })
-
-      const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
-      dbRefUpcomingTrips.on('value', snapshot => {
-        const data = snapshot.val()
-        if (snapshot.exists()) {
-          this.setState({
-            currentUserUpcomingTrips: data
-          })
-        }
-      })
-
-    })
   }
 
   logoutOfGoogle() {
@@ -347,109 +369,123 @@ class App extends React.Component {
       })
   }
 
-  createNewAccount(email, password, fullName) {
+  createNewAccount(email, password, firstName, lastName, fullName) {
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      
-      const userID = firebase.auth().currentUser.uid
-      firebase.auth().currentUser.updateProfile({
-        displayName: fullName
-      })
+      .then(() => {
 
-      const user = {
-        userID: userID,
-        userName: fullName,
-        upcomingTrips: {}
-      }
-      
-      const dbRefUser = firebase.database().ref(`users/${userID}`)
-      dbRefUser.push(user)
+        const userID = firebase.auth().currentUser.uid
+        firebase.auth().currentUser.updateProfile({
+          displayName: fullName
+        })
 
-      this.setState({
-        userLoggedIn: true,
-        userLoggedInWithEmail: true,
-        currentUserId: userID,
-        currentUserName: fullName
-      })
+        const user = {
+          userID: userID,
+          userName: fullName,
+          upcomingTrips: {}
+        }
 
-    }).catch(error => {
-      if(error.message === "The email address is already in use by another account") {
-        alert(`Error: ${error.message}. If you are using a Gmail address, try clicking on "Login" and "Log In With Google"`)
-      }
-      else if(error) {
-        console.log(error)
+        const dbRefUser = firebase.database().ref(`users/${userID}`)
+        dbRefUser.push(user)
+
+        this.setState({
+          userLoggedIn: true,
+          userLoggedInWithEmail: true,
+          createdUser: true,
+          createUserFirstName: firstName,
+          createUserLastName: lastName,
+          currentUserId: userID
+        })
+
+      }).catch(error => {
+        if (error.message === "The email address is already in use by another account") {
+          alert(`Error: ${error.message}. If you are using a Gmail address, try clicking on "Login" and "Log In With Google"`)
+        }
+        else if (error) {
+          console.log(error)
           alert(`Error: ${error.message}`)
-      }
-    })
+        }
+        else {
+          return;
+        }
+      })
   }
-  
+
   loginWithEmail(email, password) {
     firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      
-      const user = firebase.auth().currentUser
-      const userID = user.uid
-      const displayName = user.displayName
-      
-      this.setState({
-        userLoggedIn: true,
-        userLoggedInWithEmail: true,
-        currentUserId: userID,
-        currentUserName: displayName
-      })
+      .then(() => {
 
-      const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
-      dbRefUpcomingTrips.on('value', snapshot => {
-        const data = snapshot.val()
-        if (snapshot.exists()) {
+        const user = firebase.auth().currentUser
+        const userID = user.uid
+        const displayName = user.displayName
+
+        this.setState({
+          userLoggedIn: true,
+          userLoggedInWithEmail: true,
+          currentUserId: userID,
+          currentUserName: displayName
+        })
+
+        const dbRefUpcomingTrips = firebase.database().ref(`users/${userID}/upcomingTrips`)
+        dbRefUpcomingTrips.on('value', snapshot => {
+          const data = snapshot.val()
+          if (snapshot.exists()) {
+            this.setState({
+              currentUserUpcomingTrips: data
+            })
+          }
+        })
+      }).catch(error => {
+        if (error) {
+          alert(`Error: ${error}`)
           this.setState({
-            currentUserUpcomingTrips: data
+            logInPassword: ''
           })
         }
       })
-    }).catch(error => {
-      if(error) {
-        alert(`Error: ${error}`)
-      }
-    })
   }
 
   logoutOfEmail() {
     firebase.auth().signOut()
       .then(() => {
-        console.log('logged out without error')
         this.setState({
           currentUserId: '',
           currentUserName: '',
           userLoggedIn: false,
-          userLoggedInWithEmail: false
+          userLoggedInWithEmail: false,
         })
+        // This is only true when a user just created an account
+        if (this.state.createdUser === true) {
+          this.setState({
+            createdUser: false
+          })
+        }
       }).catch((error) => {
-        if(error) {
+        if (error) {
           console.log(error)
         }
       })
   }
-  
+
   updateAvailability(selectedDate, selectedCity) {
-    
+
     const tourList = this.state.tourListUpdatedAvailability
 
-    const updatedTourList = tourList.map(item => {
+    const updatedTourList = []
+    tourList.map(item => {
       const tourCities = item.city
       const tourDates = item.departures["2019"]
 
       if (tourCities === selectedCity) {
-        for(let i = 0; i < tourDates.length; i++) {
+        for (let i = 0; i < tourDates.length; i++) {
           if (tourDates[i].date === selectedDate) {
             tourDates[i].availability = tourDates[i].availability - 1
           }
         }
-        return item;
+        updatedTourList.push(item)
       }
       else {
-        return item;
+        updatedTourList.push(item)
       }
     })
 
@@ -465,13 +501,14 @@ class App extends React.Component {
 
   addToMyTrips(selectedCity, selectedDate) {
     const tourList = this.state.tourListUpdatedAvailability
-    const currentTrips = this.state.currentUserUpcomingTrips
+    let currentTrips = this.state.currentUserUpcomingTrips
+    const currentUserID = this.state.currentUserId
 
+    // Creating and object to get add to the users Firebase profile
     const cityObjectWithSelectedDate = {
       cityObject: [],
       selectedDate: ''
     }
-    
     const tripToAdd = tourList.filter(item => {
       if (item.city === selectedCity) {
         return true;
@@ -487,25 +524,26 @@ class App extends React.Component {
 
     currentTrips.push(cityObjectWithSelectedDate)
 
-    this.setState({
-      currentUserUpcomingTrips: currentTrips
-    })
-
-    const currentUserID = this.state.currentUserId
+    
     const dbRefUpcomingTrips = firebase.database().ref(`users/${currentUserID}/upcomingTrips`)
 
     dbRefUpcomingTrips.set(currentTrips)
+    
+    // this.setState({
+    //   currentUserUpcomingTrips: currentTrips
+    // })
+
 
   }
 
   removeTrip(keyToRemove) {
     const upComingTrips = this.state.currentUserUpcomingTrips
-    
+
     const updatedUpcomingTrips = []
-    
+
     upComingTrips.map((trip, i) => {
-      
-      if(i !== keyToRemove) {
+
+      if (i !== keyToRemove) {
         updatedUpcomingTrips.push(trip)
       }
     })
@@ -523,55 +561,80 @@ class App extends React.Component {
     return (
       <div>
         <Router>
-            <div>
-              
-              <NavBar 
-                userLoggedIn={this.state.userLoggedIn}
-                loginWithGoogle={this.loginWithGoogle}
-                logoutOfGoogle={this.logoutOfGoogle}
-                createNewAccount={this.createNewAccount}
-                loginWithEmail={this.loginWithEmail}
-                logoutOfEmail={this.logoutOfEmail}
-                userLoggedInWithEmail={this.state.userLoggedInWithEmail}
-                userLoggedInWithGoogle={this.state.userLoggedInWithGoogle}
-                />
-  
-            <Route exact path="/" render={() => {
-                return (
-                  <Home 
-                    tourList={this.state.tourListToRender}
-                  />
-                )
-              }} />
-              
-              <Route path="/myTrips" exact render={() => {
-                return (
-                  <MyTrips 
-                    upcomingTrips={this.state.currentUserUpcomingTrips}
-                    userName={this.state.currentUserName}
-                    removeTrip={this.removeTrip}
-                    upcomingTrips={this.state.currentUserUpcomingTrips}
-                    userLoggedIn={this.state.userLoggedIn}
-                  />
-                )
-              }} />
-              <Route path="/bookings" exact render={() => {
-                return (
-                  <Bookings 
-                    tourList={this.state.tourListUpdatedAvailability}
-                    updateAvailability={this.updateAvailability}
-                    userLoggedIn={this.state.userLoggedIn}
-                    addToMyTrips={this.addToMyTrips}
-                    loginWithGoogle={this.loginWithGoogle}
-                  />
-                )
-              }} />
-              
-              <Footer />
+          <div>
 
-            </div>
+            <NavBar
+              userLoggedIn={this.state.userLoggedIn}
+              loginWithGoogle={this.loginWithGoogle}
+              logoutOfGoogle={this.logoutOfGoogle}
+              createNewAccount={this.createNewAccount}
+              loginWithEmail={this.loginWithEmail}
+              logoutOfEmail={this.logoutOfEmail}
+              userLoggedInWithEmail={this.state.userLoggedInWithEmail}
+              userLoggedInWithGoogle={this.state.userLoggedInWithGoogle}
+              handleChange={this.handleChange}
+              createUserFirstName={this.state.createUserFirstName}
+              createUserLastName={this.state.createUserLastName}
+              createUserEmail={this.state.createUserEmail}
+              createUserPassword={this.state.createUserPassword}
+              logInEmail={this.state.logInEmail}
+              logInPassword={this.state.logInPassword}
+            />
+
+            <Route exact path="/" render={() => {
+              return (
+                <Home
+                  tourList={this.state.tourListToRender}
+                />
+              )
+            }} />
+
+            <Route 
+              path="/myTrips" 
+              exact 
+              render={() => {
+                return (
+                  <MyTrips
+                    upcomingTrips={this.state.currentUserUpcomingTrips}
+                    currentUserName={this.state.currentUserName}
+                    removeTrip={this.removeTrip}
+                    userLoggedIn={this.state.userLoggedIn}
+                    createUserFirstName={this.state.createUserFirstName}
+                    createUserLastName={this.state.createUserLastName}
+                    createdUser={this.state.createdUser}
+                  />
+                )
+            }} />
+            <Route path="/bookings" exact render={() => {
+              return (
+                <Bookings
+                  tourList={this.state.tourListUpdatedAvailability}
+                  updateAvailability={this.updateAvailability}
+                  userLoggedIn={this.state.userLoggedIn}
+                  addToMyTrips={this.addToMyTrips}
+                  loginWithGoogle={this.loginWithGoogle}
+                  logoutOfGoogle={this.logoutOfGoogle}
+                  createNewAccount={this.createNewAccount}
+                  loginWithEmail={this.loginWithEmail}
+                  logoutOfEmail={this.logoutOfEmail}
+                  userLoggedInWithEmail={this.state.userLoggedInWithEmail}
+                  userLoggedInWithGoogle={this.state.userLoggedInWithGoogle}
+                  handleChange={this.handleChange}
+                  createUserFirstName={this.state.createUserFirstName}
+                  createUserLastName={this.state.createUserLastName}
+                  createUserEmail={this.state.createUserEmail}
+                  createUserPassword={this.state.createUserPassword}
+                  logInEmail={this.state.logInEmail}
+                  logInPassword={this.state.logInPassword}
+                />
+              )
+            }} />
+
+            <Footer />
+
+          </div>
         </Router>
-        
+
       </div>
     )
   }

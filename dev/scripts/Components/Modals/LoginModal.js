@@ -3,7 +3,6 @@ import NewAccountModal from './NewAccountModal';
 import LoginWithEmailModal from './LoginWithEmailModal';
 
 const LoginModal = (props) => {
-    
     function closeModal() {
         $('.login-modal').css({ 'display': 'none' })
         $('.black-screen').css({ 'display': 'none' })
@@ -15,8 +14,8 @@ const LoginModal = (props) => {
     function newAccountModal() {
         $('.login-modal').addClass('fade-out')
         $('.login-modal').css({ 'display': 'none' })
-        setTimeout(function(){
-            $('.new-account-modal').css({'display': 'block'})
+        setTimeout(function () {
+            $('.new-account-modal').css({ 'display': 'block' })
         }, 100)
     }
 
@@ -27,18 +26,26 @@ const LoginModal = (props) => {
             $('.login-with-email-modal').css({ 'display': 'block' })
         }, 100)
     }
-    
     return (
         <div className="modal-container">
             {/* Only renders onClick of Create New Account a-tag  */}
             <NewAccountModal
                 createNewAccount={props.createNewAccount}
                 userLoggedIn={props.userLoggedIn}
+                handleChange={props.handleChange}
+                createUserFirstName={props.createUserFirstName}
+                createUserLastName={props.createUserLastName}
+                createUserEmail={props.createUserEmail}
+                createUserPassword={props.createUserPassword}
             />
             <LoginWithEmailModal
                 loginWithEmail={props.loginWithEmail}
                 userLoggedIn={props.userLoggedIn}
+                handleChange={props.handleChange}
+                logInEmail={props.logInEmail}
+                logInPassword={props.logInPassword}
             />
+
             <div className="modal login-modal">
                 <div className="close-modal-button" onClick={closeModal}>
                     <i className="fas fa-times" data-modal-to-close="login-modal"></i>
